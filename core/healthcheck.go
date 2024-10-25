@@ -4,6 +4,7 @@ import (
 	"context"
 	"net/http"
 	"net/url"
+	"time"
 
 	"github.com/carlmjohnson/requests"
 	"github.com/rs/zerolog/log"
@@ -39,5 +40,12 @@ func healthcheck(endpoint string) {
 
 func HealthcheckMain(endpoint string) {
 	validateEndpoint(endpoint)
-	healthcheck(endpoint)
+
+	log.Info().Msg("Sleep for 15 seconds")
+	time.Sleep(15 * time.Second)
+
+	for range 5 {
+		healthcheck(endpoint)
+		time.Sleep(250 * time.Millisecond)
+	}
 }
