@@ -21,7 +21,7 @@ func HealthcheckValidateArgs(args []string) {
 func validateEndpoint(endpoint string) {
 	_, err := url.ParseRequestURI(endpoint)
 	if err != nil {
-		log.Fatal().Err(err).Msg("Invalid URL")
+		log.Fatal().Msg("Invalid URL")
 	}
 }
 
@@ -32,7 +32,7 @@ func healthcheck(endpoint string) {
 		Fetch(context.Background())
 
 	if err != nil {
-		log.Fatal().Err(err).Msgf("Failed to reach endpoint: %s", endpoint)
+		log.Fatal().Msgf("Failed to reach endpoint: %s", endpoint)
 	} else {
 		log.Info().Msgf("Endpoint healthy: %s", endpoint)
 	}
