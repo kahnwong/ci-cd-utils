@@ -4,7 +4,7 @@ go 1.23.2
 
 require (
 	github.com/carlmjohnson/requests v0.24.3
-	github.com/rs/zerolog v1.33.0
+	github.com/rs/zerolog v1.34.0
 	github.com/spf13/cobra v1.8.1
 )
 
