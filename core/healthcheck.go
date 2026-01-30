@@ -29,7 +29,7 @@ func validateEndpoint(endpoint string) error {
 	return nil
 }
 
-func healthcheck(endpoint string) error {
+func makeRequest(endpoint string) error {
 	err := requests.
 		URL(endpoint).
 		Method(http.MethodGet).
@@ -43,7 +43,7 @@ func healthcheck(endpoint string) error {
 	return nil
 }
 
-func HealthcheckMain(endpoint string) error {
+func Healthcheck(endpoint string) error {
 	if err := validateEndpoint(endpoint); err != nil {
 		return err
 	}
@@ -52,7 +52,7 @@ func HealthcheckMain(endpoint string) error {
 	time.Sleep(15 * time.Second)
 
 	for range 5 {
-		if err := healthcheck(endpoint); err != nil {
+		if err := makeRequest(endpoint); err != nil {
 			return err
 		}
 		time.Sleep(250 * time.Millisecond)

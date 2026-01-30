@@ -16,7 +16,7 @@ var healthcheckCmd = &cobra.Command{
 			log.Fatal().Err(err).Msg("Invalid arguments")
 		}
 
-		if err := core.HealthcheckMain(args[0]); err != nil {
+		if err := core.Healthcheck(args[0]); err != nil {
 			log.Fatal().Err(err).Msg("Healthcheck failed")
 		}
 	},
