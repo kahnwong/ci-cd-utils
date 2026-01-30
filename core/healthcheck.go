@@ -2,6 +2,8 @@ package core
 
 import (
 	"context"
+	"errors"
+	"fmt"
 	"net/http"
 	"net/url"
 	"time"
@@ -10,42 +12,51 @@ import (
 	"github.com/rs/zerolog/log"
 )
 
-func HealthcheckValidateArgs(args []string) {
+func HealthcheckValidateArgs(args []string) error {
 	if len(args) == 0 {
-		log.Error().Msg("No URL provided")
+		return errors.New("no URL provided")
 	} else if len(args) > 1 {
-		log.Error().Msg("Too many arguments provided. Only single argument allowed")
+		return errors.New("too many arguments provided. Only single argument allowed")
 	}
+	return nil
 }
 
-func validateEndpoint(endpoint string) {
+func validateEndpoint(endpoint string) error {
 	_, err := url.ParseRequestURI(endpoint)
 	if err != nil {
-		log.Fatal().Msg("Invalid URL")
+		return fmt.Errorf("invalid URL: %w", err)
 	}
+	return nil
 }
 
-func healthcheck(endpoint string) {
+func healthcheck(endpoint string) error {
 	err := requests.
 		URL(endpoint).
 		Method(http.MethodGet).
 		Fetch(context.Background())
 
 	if err != nil {
-		log.Fatal().Msgf("Failed to reach endpoint: %s", endpoint)
-	} else {
-		log.Info().Msgf("Endpoint healthy: %s", endpoint)
+		return fmt.Errorf("failed to reach endpoint %s: %w", endpoint, err)
 	}
+
+	log.Info().Msgf("Endpoint healthy: %s", endpoint)
+	return nil
 }
 
-func HealthcheckMain(endpoint string) {
-	validateEndpoint(endpoint)
+func HealthcheckMain(endpoint string) error {
+	if err := validateEndpoint(endpoint); err != nil {
+		return err
+	}
 
 	log.Info().Msg("Sleep for 15 seconds")
 	time.Sleep(15 * time.Second)
 
 	for range 5 {
-		healthcheck(endpoint)
+		if err := healthcheck(endpoint); err != nil {
+			return err
+		}
 		time.Sleep(250 * time.Millisecond)
 	}
+
+	return nil
 }
