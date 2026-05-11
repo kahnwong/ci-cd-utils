@@ -1,6 +1,6 @@
 module github.com/kahnwong/ci-cd-utils
 
-go 1.23.2
+go 1.23.12
 
 require (
 	github.com/carlmjohnson/requests v0.25.1
