@@ -3,7 +3,7 @@ module github.com/kahnwong/ci-cd-utils
 go 1.27.0
 
 require (
-	github.com/carlmjohnson/requests v0.26.1
+	github.com/carlmjohnson/requests/v2 v2.26.0
 	github.com/rs/zerolog v1.35.1
 	github.com/spf13/cobra v1.10.2
 )
